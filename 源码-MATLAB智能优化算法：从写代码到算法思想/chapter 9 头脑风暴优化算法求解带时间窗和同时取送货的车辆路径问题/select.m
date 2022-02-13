@@ -1,0 +1,22 @@
+%% 从种群中选出目标函数值在前60%的个体
+%输入Population：  种群
+%输入v_num：       车辆最大允许使用数目
+%输入cusnum：      顾客数目
+%输入cap：         车辆最大装载量
+%输入demands：     顾客需求量
+%输入pdemands：    顾客回收量
+%输入a,b：         顾客时间窗结束时间[a[i],b[i]]
+%输入s：           对每个顾客的服务时间
+%输入L：           仓库时间窗结束时间
+%输入dist：        距离矩阵
+%输入v：           车辆行驶速度
+%输入alpha：       违反的装载量约束的惩罚函数系数
+%输入belta：       违反时间窗约束的惩罚函数系数
+%输出offspring：   目标函数值在前60%的个体
+function offspring=select(Population,v_num,cusnum,cap,demands,pdemands,a,b,s,L,dist,v,alpha,belta)
+NIND=size(Population,1);                    %种群数目
+Obj=ObjFunction(Population,v_num,cusnum,cap,demands,pdemands,a,b,s,L,dist,v,alpha,belta);   %计算种群目标函数值
+[~,index]=sort(Obj);                        %将种群按照目标函数值从小到大的顺序进行排序
+off_num=ceil(NIND*0.6);                     %选择出的后代个体数目
+offspring=Population(index(1:off_num),:);   %选择出的后代个体
+end
